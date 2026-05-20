@@ -70,6 +70,9 @@ export const Students: React.FC = () => {
   const [whatsapp, setWhatsapp] = useState('');
   const [country, setCountry] = useState('');
   const [course, setCourse] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [educationLevel, setEducationLevel] = useState('');
+  const [gender, setGender] = useState('');
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [idProofFile, setIdProofFile] = useState<File | null>(null);
@@ -80,6 +83,9 @@ export const Students: React.FC = () => {
     setWhatsapp('');
     setCountry('');
     setCourse('');
+    setDateOfBirth('');
+    setEducationLevel('');
+    setGender('');
     setPhotoFile(null);
     setPhotoPreview(null);
     setIdProofFile(null);
@@ -144,7 +150,11 @@ export const Students: React.FC = () => {
         driveFolderId,
         driveFolderName,
         status: 'approved' as const,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        dateOfBirth: dateOfBirth || undefined,
+        educationLevel: educationLevel || undefined,
+        gender: gender || undefined,
+        updatedAt: new Date().toISOString()
       };
 
       await addMutation.mutateAsync(newStudentData);
@@ -171,7 +181,9 @@ export const Students: React.FC = () => {
       s.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.whatsapp.includes(searchTerm) ||
       s.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.course.toLowerCase().includes(searchTerm.toLowerCase());
+      s.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (s.educationLevel && s.educationLevel.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (s.gender && s.gender.toLowerCase().includes(searchTerm.toLowerCase()));
       
     const matchesStatus = statusFilter === 'all' || s.status === statusFilter;
     
@@ -264,9 +276,13 @@ export const Students: React.FC = () => {
       { key: 'whatsapp' as const, label: 'WhatsApp' },
       { key: 'country' as const, label: 'Country' },
       { key: 'course' as const, label: 'Course' },
+      { key: 'dateOfBirth' as const, label: 'Date of Birth' },
+      { key: 'educationLevel' as const, label: 'Education Level' },
+      { key: 'gender' as const, label: 'Gender' },
       { key: 'status' as const, label: 'Status' },
       { key: 'driveFolderName' as const, label: 'Drive Folder' },
-      { key: 'createdAt' as const, label: 'Registered Date' }
+      { key: 'createdAt' as const, label: 'Registered Date' },
+      { key: 'updatedAt' as const, label: 'Last Updated' }
     ];
     
     const csvContent = convertToCSV(filteredStudents, headers);
@@ -554,6 +570,24 @@ export const Students: React.FC = () => {
                     <span className="text-slate-400">WhatsApp Contact</span>
                     <span className="font-semibold text-slate-800 dark:text-slate-200">{viewingStudent.whatsapp}</span>
                   </div>
+                  {viewingStudent.dateOfBirth && (
+                    <div className="flex justify-between border-b border-slate-50 dark:border-slate-850/40 pb-2">
+                      <span className="text-slate-400">Date of Birth</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{viewingStudent.dateOfBirth}</span>
+                    </div>
+                  )}
+                  {viewingStudent.gender && (
+                    <div className="flex justify-between border-b border-slate-50 dark:border-slate-850/40 pb-2">
+                      <span className="text-slate-400">Gender</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200 capitalize">{viewingStudent.gender}</span>
+                    </div>
+                  )}
+                  {viewingStudent.educationLevel && (
+                    <div className="flex justify-between border-b border-slate-50 dark:border-slate-850/40 pb-2">
+                      <span className="text-slate-400">Education Level</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{viewingStudent.educationLevel}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between border-b border-slate-50 dark:border-slate-850/40 pb-2">
                     <span className="text-slate-400">Registered Date</span>
                     <span className="font-semibold text-slate-850 dark:text-slate-250 flex items-center gap-1">
@@ -561,6 +595,14 @@ export const Students: React.FC = () => {
                       {new Date(viewingStudent.createdAt).toLocaleDateString(undefined, { dateStyle: 'medium' })}
                     </span>
                   </div>
+                  {viewingStudent.updatedAt && (
+                    <div className="flex justify-between border-b border-slate-50 dark:border-slate-850/40 pb-2">
+                      <span className="text-slate-400">Last Updated</span>
+                      <span className="font-semibold text-slate-850 dark:text-slate-250">
+                        {new Date(viewingStudent.updatedAt).toLocaleDateString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -716,6 +758,41 @@ export const Students: React.FC = () => {
                 {courses.map(c => (
                   <option key={c.id} value={c.title}>{c.title}</option>
                 ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Input
+              label="Date of Birth"
+              placeholder="e.g. 09/05/2000"
+              value={dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
+              disabled={formLoading}
+            />
+
+            <Input
+              label="Education Level"
+              placeholder="e.g. 12 passed"
+              value={educationLevel}
+              onChange={(e) => setEducationLevel(e.target.value)}
+              disabled={formLoading}
+            />
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-slate-755 dark:text-slate-350 tracking-wide uppercase">
+                Gender
+              </label>
+              <select
+                className="w-full text-sm rounded-xl border border-slate-300 dark:border-slate-750 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 px-4 py-2.5 h-[42px]"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                disabled={formLoading}
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
               </select>
             </div>
           </div>

@@ -27,6 +27,10 @@ export interface Student {
   driveFolderName: string;
   status: ApprovalStatus;
   createdAt: string;
+  dateOfBirth?: string;
+  educationLevel?: string;
+  gender?: string;
+  updatedAt?: string;
 }
 
 export interface Teacher {

@@ -145,6 +145,10 @@ export const MOCK_STUDENTS: Student[] = [
     driveFolderName: 'fathima_fidha_2026',
     status: 'pending',
     createdAt: '2026-05-18T10:20:00Z',
+    dateOfBirth: '14/08/2005',
+    educationLevel: '10th Standard',
+    gender: 'female',
+    updatedAt: '2026-05-18T10:20:00Z',
   },
   {
     id: 'stud_2',
@@ -161,6 +165,10 @@ export const MOCK_STUDENTS: Student[] = [
     driveFolderName: 'zainab_ahmed_2026',
     status: 'approved',
     createdAt: '2026-05-12T14:35:00Z',
+    dateOfBirth: '20/11/2009',
+    educationLevel: 'Grade 8',
+    gender: 'female',
+    updatedAt: '2026-05-12T14:35:00Z',
   },
   {
     id: 'stud_3',
@@ -177,6 +185,10 @@ export const MOCK_STUDENTS: Student[] = [
     driveFolderName: 'hamza_khan_2026',
     status: 'approved',
     createdAt: '2026-05-02T16:10:00Z',
+    dateOfBirth: '05/03/2002',
+    educationLevel: 'Undergraduate',
+    gender: 'male',
+    updatedAt: '2026-05-02T16:10:00Z',
   },
   {
     id: 'stud_4',
@@ -193,6 +205,10 @@ export const MOCK_STUDENTS: Student[] = [
     driveFolderName: 'bilal_mustafa_2026',
     status: 'rejected',
     createdAt: '2026-04-28T11:45:00Z',
+    dateOfBirth: '12/09/1998',
+    educationLevel: 'Postgraduate',
+    gender: 'male',
+    updatedAt: '2026-04-28T11:45:00Z',
   }
 ];
 
